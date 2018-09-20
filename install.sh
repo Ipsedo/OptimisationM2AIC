@@ -35,7 +35,7 @@ cp ${COCO_BUILD_PATH}/coco.c ${SRC_PATH}
 echo "coco.c copied"
 
 # Remove coco.h and copy newer
-if ! [ -f "${SRC_PATH}/coco.h" ]; then
+if [ -f "${SRC_PATH}/coco.h" ]; then
 	rm -f ${SRC_PATH}/coco.h
 fi
 cp ${COCO_BUILD_PATH}/coco.h ${SRC_PATH}
