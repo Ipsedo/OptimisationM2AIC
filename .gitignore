@@ -1,8 +1,6 @@
 coco/
 coco.h
 coco.c
-Makefile
-*.o
-example_experiment
 exdata/
 ppdata/
+build/
