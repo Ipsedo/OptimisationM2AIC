@@ -16,9 +16,6 @@ python do.py install-postprocessing
 
 cd ..
 PROJECT_PATH="."
-if ! [ -d ${PROJECT_PATH} ]; then
-	mkdir ${PROJECT_PATH}
-fi
 
 COCO_BUILD_PATH="coco/code-experiments/build/c"
 
