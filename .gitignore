@@ -4,3 +4,4 @@ coco.c
 Makefile
 *.o
 example_experiment
+exdata/
