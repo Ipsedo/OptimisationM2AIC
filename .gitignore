@@ -1,3 +1,4 @@
 coco/
 coco.h
 coco.c
+Makefile
