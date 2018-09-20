@@ -15,23 +15,19 @@ python do.py run-c
 python do.py install-postprocessing
 
 cd ..
-PROJECT_PATH="."
+SRC_PATH="./src/"
 
 COCO_BUILD_PATH="coco/code-experiments/build/c"
 
-if ! [ -f "${PROJECT_PATH}/example_experiment.c" ]; then
-	cp ${COCO_BUILD_PATH}/example_experiment.c ${PROJECT_PATH}
+if ! [ -f "${SRC_PATH}/example_experiment.c" ]; then
+	cp ${COCO_BUILD_PATH}/example_experiment.c ${SRC_PATH}
 	echo "example_experiment.c copied"
 fi
-if ! [ -f "${PROJECT_PATH}/coco.c" ]; then
-	cp ${COCO_BUILD_PATH}/coco.c ${PROJECT_PATH}
+if ! [ -f "${SRC_PATH}/coco.c" ]; then
+	cp ${COCO_BUILD_PATH}/coco.c ${SRC_PATH}
 	echo "coco.c copied"
 fi
-if ! [ -f "${PROJECT_PATH}/coco.h" ]; then
-	cp ${COCO_BUILD_PATH}/coco.h ${PROJECT_PATH}
+if ! [ -f "${SRC_PATH}/coco.h" ]; then
+	cp ${COCO_BUILD_PATH}/coco.h ${SRC_PATH}
 	echo "coco.h copied"
-fi
-if ! [ -f "${PROJECT_PATH}/Makefile" ]; then
-	cp ${COCO_BUILD_PATH}/Makefile ${PROJECT_PATH}
-	echo "Makefile copied"
 fi
