@@ -5,3 +5,4 @@ Makefile
 *.o
 example_experiment
 exdata/
+ppdata/
