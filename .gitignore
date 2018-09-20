@@ -2,3 +2,5 @@ coco/
 coco.h
 coco.c
 Makefile
+*.o
+exemple_experiment
