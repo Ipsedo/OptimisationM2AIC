@@ -6,9 +6,9 @@ fi
 
 pip3 install setuptools
 pip3 install numpy
-pip3 install scipy
+pip3 install --user scipy
 pip3 install six
-pip3 install matplotlib
+pip3 install --user matplotlib
 
 cd coco
 python do.py run-c
