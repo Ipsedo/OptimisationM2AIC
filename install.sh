@@ -2,7 +2,7 @@
 
 # Clone coco
 if ! [ -d "./coco" ]; then
-	git clone -b release https://github.com/numbbo/coco.git
+	git clone https://github.com/numbbo/coco.git
 fi
 
 # Install dependencies
