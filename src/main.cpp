@@ -4,13 +4,15 @@ int main(int argc, char **argv) {
   vector<vector<float>> v1;
   vector<vector<float>> v2;
 
-  for (int i = 0; i < 10; i++) {
+  int size = 100;
+
+  for (int i = 0; i < size; i++) {
     vector<float> tmp1;
     vector<float> tmp2;
 
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < size; j++) {
       tmp1.push_back(2.f);
-      tmp2.push_back(i * 10 + j);
+      tmp2.push_back(i * size + j);
     }
 
     v1.push_back(tmp1);
