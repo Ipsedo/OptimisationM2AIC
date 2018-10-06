@@ -98,7 +98,7 @@ static void timing_data_finalize(timing_data_t *timing_data);
  * The main method initializes the random number generator and calls the example experiment on the
  * bi-objective suite.
  */
-int main(void) {
+int main_old(void) {
 
   coco_random_state_t *random_generator = coco_random_new(RANDOM_SEED);
 
@@ -108,9 +108,9 @@ int main(void) {
   printf("Running the example experiment... (might take time, be patient)\n");
   fflush(stdout);
 
-  /** 
+  /**
    * Start the actual experiments on a test suite and use a matching logger, for
-   * example one of the following: 
+   * example one of the following:
    *   bbob                 24 unconstrained noiseless single-objective functions
    *   bbob-biobj           55 unconstrained noiseless bi-objective functions
    *   bbob-biobj-ext       92 unconstrained noiseless bi-objective functions
@@ -137,7 +137,7 @@ int main(void) {
  * that can serve also as a timing experiment.
  *
  * @param suite_name Name of the suite (e.g. "bbob" or "bbob-biobj").
- * @param observer_name Name of the observer matching with the chosen suite (e.g. "bbob-biobj" 
+ * @param observer_name Name of the observer matching with the chosen suite (e.g. "bbob-biobj"
  * when using the "bbob-biobj-ext" suite).
  * @param random_generator The random number generator.
  */
@@ -170,18 +170,18 @@ void example_experiment(const char *suite_name,
 
   /* Iterate over all problems in the suite */
   while ((PROBLEM = coco_suite_get_next_problem(suite, observer)) != NULL) {
-    
+
     size_t dimension = coco_problem_get_dimension(PROBLEM);
 
     /* Run the algorithm at least once */
     for (run = 1; run <= 1 + INDEPENDENT_RESTARTS; run++) {
 
-      long evaluations_done = (long) (coco_problem_get_evaluations(PROBLEM) + 
+      long evaluations_done = (long) (coco_problem_get_evaluations(PROBLEM) +
             coco_problem_get_evaluations_constraints(PROBLEM));
       long evaluations_remaining = (long) (dimension * BUDGET_MULTIPLIER) - evaluations_done;
 
       /* Break the loop if the target was hit or there are no more remaining evaluations */
-      if ((coco_problem_final_target_hit(PROBLEM) && 
+      if ((coco_problem_final_target_hit(PROBLEM) &&
            coco_problem_get_number_of_constraints(PROBLEM) == 0)
            || (evaluations_remaining <= 0))
         break;
@@ -196,7 +196,7 @@ void example_experiment(const char *suite_name,
                        coco_problem_get_largest_values_of_interest(PROBLEM),
                        (size_t) evaluations_remaining,
                        random_generator);
-      
+
       /* Break the loop if the algorithm performed no evaluations or an unexpected thing happened */
       if (coco_problem_get_evaluations(PROBLEM) == evaluations_done) {
         printf("WARNING: Budget has not been exhausted (%lu/%lu evaluations done)!\n",
@@ -248,7 +248,7 @@ void my_random_search(evaluate_function_t evaluate_func,
   double *constraints_values = NULL;
   double range;
   size_t i, j;
-  
+
   if (number_of_constraints > 0 )
     constraints_values = coco_allocate_vector(number_of_constraints);
 
@@ -259,7 +259,7 @@ void my_random_search(evaluate_function_t evaluate_func,
       range = upper_bounds[j] - lower_bounds[j];
       x[j] = lower_bounds[j] + coco_random_uniform(random_generator) * range;
     }
-    
+
     /* Evaluate COCO's constraints function if problem is constrained */
     if (number_of_constraints > 0 )
       evaluate_cons(x, constraints_values);
