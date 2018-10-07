@@ -57,9 +57,8 @@ vector<T> operator+(vector<T> v, U s) {
 	return v;
 }
 
-double getNormalValue(double x, double mu, double sig);
-
-vector<double> getNormalValues(int n, double mu, double sig);
+vector<double> getNormalValues(int n, normal_distribution<double> distribution,
+	default_random_engine generator);
 
 double norm(vector<double> v);
 

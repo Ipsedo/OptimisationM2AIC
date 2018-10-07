@@ -3,16 +3,14 @@
 //
 
 #include "utils.h"
+#include <random>
 #include <iostream>
 
-double getNormalValue(double x, double mu, double sig) {
-	return exp(-0.5 * pow((x - mu) / sig, 2.)) / (sig * sqrt(2. * M_PI));
-}
-
-vector<double> getNormalValues(int n, double mu, double sig) {
+vector<double> getNormalValues(int n, normal_distribution<double> distribution,
+	default_random_engine generator) {
 	vector<double> res((unsigned long) n);
 	transform(res.begin(), res.end(), res.begin(),
-			  [mu,sig](double d){ return getNormalValue(2. * double(rand()) / double(RAND_MAX) - 1., mu, sig); });
+			  [&distribution, &generator](double d){ return distribution(generator); });
 	return res;
 }
 
