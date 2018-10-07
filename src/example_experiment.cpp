@@ -124,8 +124,8 @@ void example_experiment(const char *suite_name,
 
 	/* Set some options for the observer. See documentation for other options. */
 	char *observer_options =
-			coco_strdupf("result_folder: RS_on_%s "
-								 "algorithm_name: RS "
+			coco_strdupf("result_folder: SA_ES_on_%s "
+								 "algorithm_name: SA_ES "
 								 "algorithm_info: \"A simple random search algorithm\"", suite_name);
 
 	/* Initialize the suite and observer.
@@ -169,7 +169,7 @@ void example_experiment(const char *suite_name,
 							 (size_t) evaluations_remaining,
 							 random_generator);*/
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 900; i++) {
+			for (int i = 0; i < 100; i++) {
 				sa_es.step();
 			}
 
