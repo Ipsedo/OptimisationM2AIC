@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 	vector<float> v3;
 	for (int i = 0; i < size; i++)
 		v3.push_back(i + 1.f);
-	res = v2 * v3;
+	res = v2 * v3 + 0.5f;
 	for (int i = 0; i < res.size(); i++) {
 		for (int j = 0; j < res[i].size(); j++)
 			cout << res[i][j] << ", ";
