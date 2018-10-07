@@ -66,6 +66,8 @@ static void timing_data_time_problem(timing_data_t *timing_data, coco_problem_t 
 
 static void timing_data_finalize(timing_data_t *timing_data);
 
+#define SEED 54518941
+
 /**
  * The main method initializes the random number generator and calls the example experiment on the
  * bi-objective suite.
@@ -73,6 +75,8 @@ static void timing_data_finalize(timing_data_t *timing_data);
 int main(void) {
 
 	coco_random_state_t *random_generator = coco_random_new(RANDOM_SEED);
+
+	srand(SEED);
 
 	/* Change the log level to "warning" to get less output */
 	coco_set_log_level("info");
@@ -169,7 +173,7 @@ void example_experiment(const char *suite_name,
 							 (size_t) evaluations_remaining,
 							 random_generator);*/
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 50; i++) {
 				sa_es.step();
 			}
 
