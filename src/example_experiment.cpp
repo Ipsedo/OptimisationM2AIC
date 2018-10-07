@@ -173,7 +173,7 @@ void example_experiment(const char *suite_name,
 							 (size_t) evaluations_remaining,
 							 random_generator);*/
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 1000; i++) {
 				sa_es.step();
 			}
 
@@ -196,139 +196,6 @@ void example_experiment(const char *suite_name,
 	coco_observer_free(observer);
 	coco_suite_free(suite);
 
-}
-
-/**
- * A random search algorithm that can be used for single- as well as multi-objective optimization.
- *
- * @param evaluate_function The function used to evaluate the objective function.
- * @param evaluate_constraint The function used to evaluate the constraints.
- * @param dimension The number of variables.
- * @param number_of_objectives The number of objectives.
- * @param number_of_constraints The number of constraints.
- * @param lower_bounds The lower bounds of the region of interested (a vector containing dimension values).
- * @param upper_bounds The upper bounds of the region of interested (a vector containing dimension values).
- * @param max_budget The maximal number of evaluations.
- * @param random_generator Pointer to a random number generator able to produce uniformly and normally
- * distributed random numbers.
- */
-void my_random_search(evaluate_function_t evaluate_func,
-					  evaluate_function_t evaluate_cons,
-					  const size_t dimension,
-					  const size_t number_of_objectives,
-					  const size_t number_of_constraints,
-					  const double *lower_bounds,
-					  const double *upper_bounds,
-					  const size_t max_budget,
-					  coco_random_state_t *random_generator) {
-
-	double *x = coco_allocate_vector(dimension);
-	double *functions_values = coco_allocate_vector(number_of_objectives);
-	double *constraints_values = NULL;
-	double range;
-	size_t i, j;
-
-	if (number_of_constraints > 0)
-		constraints_values = coco_allocate_vector(number_of_constraints);
-
-	for (i = 0; i < max_budget; ++i) {
-
-		/* Construct x as a random point between the lower and upper bounds */
-		for (j = 0; j < dimension; ++j) {
-			range = upper_bounds[j] - lower_bounds[j];
-			x[j] = lower_bounds[j] + coco_random_uniform(random_generator) * range;
-		}
-
-		/* Evaluate COCO's constraints function if problem is constrained */
-		if (number_of_constraints > 0)
-			evaluate_cons(x, constraints_values);
-
-		/* Call COCO's evaluate function where all the logging is performed */
-		evaluate_func(x, functions_values);
-
-	}
-
-	coco_free_memory(x);
-	coco_free_memory(functions_values);
-	if (number_of_constraints > 0)
-		coco_free_memory(constraints_values);
-}
-
-/**
- * A grid search optimizer that can be used for single- as well as multi-objective optimization.
- *
- * @param evaluate The evaluation function used to evaluate the solutions.
- * @param dimension The number of variables.
- * @param number_of_objectives The number of objectives.
- * @param lower_bounds The lower bounds of the region of interested (a vector containing dimension values).
- * @param upper_bounds The upper bounds of the region of interested (a vector containing dimension values).
- * @param max_budget The maximal number of evaluations.
- *
- * If max_budget is not enough to cover even the smallest possible grid, only the first max_budget
- * nodes of the grid are evaluated.
- */
-void my_grid_search(evaluate_function_t evaluate,
-					const size_t dimension,
-					const size_t number_of_objectives,
-					const double *lower_bounds,
-					const double *upper_bounds,
-					const size_t max_budget) {
-
-	double *x = coco_allocate_vector(dimension);
-	double *y = coco_allocate_vector(number_of_objectives);
-	long *nodes = (long *) coco_allocate_memory(sizeof(long) * dimension);
-	double *grid_step = coco_allocate_vector(dimension);
-	size_t i, j;
-	size_t evaluations = 0;
-	long max_nodes = (long) floor(pow((double) max_budget, 1.0 / (double) dimension)) - 1;
-
-	/* Take care of the borderline case */
-	if (max_nodes < 1) max_nodes = 1;
-
-	/* Initialization */
-	for (j = 0; j < dimension; j++) {
-		nodes[j] = 0;
-		grid_step[j] = (upper_bounds[j] - lower_bounds[j]) / (double) max_nodes;
-	}
-
-	while (evaluations < max_budget) {
-
-		/* Construct x and evaluate it */
-		for (j = 0; j < dimension; j++) {
-			x[j] = lower_bounds[j] + grid_step[j] * (double) nodes[j];
-		}
-
-		/* Call the evaluate function to evaluate x on the current problem (this is where all the COCO logging
-		 * is performed) */
-		evaluate(x, y);
-		evaluations++;
-
-		/* Inside the grid, move to the next node */
-		if (nodes[0] < max_nodes) {
-			nodes[0]++;
-		}
-
-			/* At an outside node of the grid, move to the next level */
-		else if (max_nodes > 0) {
-			for (j = 1; j < dimension; j++) {
-				if (nodes[j] < max_nodes) {
-					nodes[j]++;
-					for (i = 0; i < j; i++)
-						nodes[i] = 0;
-					break;
-				}
-			}
-
-			/* At the end of the grid, exit */
-			if ((j == dimension) && (nodes[j - 1] == max_nodes))
-				break;
-		}
-	}
-
-	coco_free_memory(x);
-	coco_free_memory(y);
-	coco_free_memory(nodes);
-	coco_free_memory(grid_step);
 }
 
 /**
