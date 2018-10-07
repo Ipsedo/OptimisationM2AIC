@@ -20,7 +20,7 @@ void SA_ES::step() {
 	vector<individual> childens;
 	for (int i = 0; i < lambda; i++) {
 		individual c {vector<double>((unsigned long) n), vector<double>((unsigned long) n), 0.};
-		double xi = tau * getNormalValue(float(rand()) / float(RAND_MAX), 0., 1.); // quelles bornes pour tirer un nb selon loi normale ?
+		double xi = tau * getNormalValue(double(rand()) / double(RAND_MAX), 0., 1.); // quelles bornes pour tirer un nb selon loi normale ?
 		vector<double> xis((unsigned long) n);
 		vector<double> z((unsigned long) n);
 
