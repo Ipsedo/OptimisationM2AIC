@@ -26,8 +26,8 @@ vector<vector<double>> toDiag(vector<double> v) {
 
 double norm(vector<double> v) {
 	double res = 0.;
-	for_each(v.begin(), v.end(), [&res](double d){ res += d; });
-	return res / double(v.size());
+	for_each(v.begin(), v.end(), [&res](double d){ res += pow(d, 2.); });
+	return sqrt(res);
 }
 
 
@@ -61,4 +61,3 @@ double dot(vector<double> v1, vector<double> v2) {
 	}
 	return res;
 }
-
