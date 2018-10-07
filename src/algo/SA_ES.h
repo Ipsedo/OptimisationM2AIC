@@ -16,7 +16,8 @@ private:
 	int n;
 	int d;
 
-	/*int nbConstraint;*/
+	normal_distribution<double> distribution;
+	default_random_engine generator;
 
 	int lambda;
 	int mu;
