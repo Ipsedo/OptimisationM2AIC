@@ -51,6 +51,12 @@ vector<T> operator+(vector<T> v1, vector<T> v2) {
 	return res;
 }
 
+template<typename T, typename U>
+vector<T> operator+(vector<T> v, U s) {
+	transform(v.begin(), v.end(), v.begin(), [&s](T t) { return t + s; });
+	return v;
+}
+
 double getNormalValue(double x, double mu, double sig);
 
 #endif //UTILS_H
