@@ -59,4 +59,14 @@ vector<T> operator+(vector<T> v, U s) {
 
 double getNormalValue(double x, double mu, double sig);
 
+vector<double> getNormalValues(int n, double mu, double sig);
+
+double norm(vector<double> v);
+
+vector<vector<double>> toDiag(vector<double> v);
+
+double dot(vector<double> v1, vector<double> v2);
+
+vector<double> multMV(vector<double> v, vector<vector<double>> m);
+
 #endif //UTILS_H
