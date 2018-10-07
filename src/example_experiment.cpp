@@ -13,7 +13,7 @@
 #include "coco.h"
 #include "algo/SA_ES.h"
 
-#define max(a,b) ((a) > (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 /**
  * The maximal budget for evaluations done by an optimization algorithm equals dimension * BUDGET_MULTIPLIER.
@@ -46,8 +46,8 @@ static coco_problem_t *PROBLEM;
 
 /* Declarations of all functions implemented in this file (so that their order is not important): */
 void example_experiment(const char *suite_name,
-                        const char *observer_name,
-                        coco_random_state_t *random_generator);
+						const char *observer_name,
+						coco_random_state_t *random_generator);
 
 
 /* Structure and functions needed for timing the experiment */
@@ -60,8 +60,11 @@ typedef struct {
 	time_t start_time;
 	time_t overall_start_time;
 } timing_data_t;
+
 static timing_data_t *timing_data_initialize(coco_suite_t *suite);
+
 static void timing_data_time_problem(timing_data_t *timing_data, coco_problem_t *problem);
+
 static void timing_data_finalize(timing_data_t *timing_data);
 
 /**
@@ -70,36 +73,36 @@ static void timing_data_finalize(timing_data_t *timing_data);
  */
 int main(void) {
 
-  coco_random_state_t *random_generator = coco_random_new(RANDOM_SEED);
+	coco_random_state_t *random_generator = coco_random_new(RANDOM_SEED);
 
-  /* Change the log level to "warning" to get less output */
-  coco_set_log_level("info");
+	/* Change the log level to "warning" to get less output */
+	coco_set_log_level("info");
 
-  printf("Running the example experiment... (might take time, be patient)\n");
-  fflush(stdout);
+	printf("Running the example experiment... (might take time, be patient)\n");
+	fflush(stdout);
 
-  /**
-   * Start the actual experiments on a test suite and use a matching logger, for
-   * example one of the following:
-   *   bbob                 24 unconstrained noiseless single-objective functions
-   *   bbob-biobj           55 unconstrained noiseless bi-objective functions
-   *   bbob-biobj-ext       92 unconstrained noiseless bi-objective functions
-   *   [bbob-constrained*   48 constrained noiseless single-objective functions]
-   *   [bbob-largescale*    24 unconstrained noiseless single-objective functions in large dimension]
-   *
-   * Suites with a star are partly implemented but not yet fully supported.
-   *
-   * Adapt to your need. Note that the experiment is run according
-   * to the settings, defined in example_experiment(...) below.
-   */
-  example_experiment("bbob", "bbob", random_generator);
+	/**
+	 * Start the actual experiments on a test suite and use a matching logger, for
+	 * example one of the following:
+	 *   bbob                 24 unconstrained noiseless single-objective functions
+	 *   bbob-biobj           55 unconstrained noiseless bi-objective functions
+	 *   bbob-biobj-ext       92 unconstrained noiseless bi-objective functions
+	 *   [bbob-constrained*   48 constrained noiseless single-objective functions]
+	 *   [bbob-largescale*    24 unconstrained noiseless single-objective functions in large dimension]
+	 *
+	 * Suites with a star are partly implemented but not yet fully supported.
+	 *
+	 * Adapt to your need. Note that the experiment is run according
+	 * to the settings, defined in example_experiment(...) below.
+	 */
+	example_experiment("bbob", "bbob", random_generator);
 
-  printf("Done!\n");
-  fflush(stdout);
+	printf("Done!\n");
+	fflush(stdout);
 
-  coco_random_free(random_generator);
+	coco_random_free(random_generator);
 
-  return 0;
+	return 0;
 }
 
 /**
@@ -112,84 +115,83 @@ int main(void) {
  * @param random_generator The random number generator.
  */
 void example_experiment(const char *suite_name,
-                        const char *observer_name,
-                        coco_random_state_t *random_generator) {
+						const char *observer_name,
+						coco_random_state_t *random_generator) {
 
-  size_t run;
-  coco_suite_t *suite;
-  coco_observer_t *observer;
-  timing_data_t *timing_data;
+	size_t run;
+	coco_suite_t *suite;
+	coco_observer_t *observer;
+	timing_data_t *timing_data;
 
-  /* Set some options for the observer. See documentation for other options. */
-  char *observer_options =
-      coco_strdupf("result_folder: RS_on_%s "
-                   "algorithm_name: RS "
-                   "algorithm_info: \"A simple random search algorithm\"", suite_name);
+	/* Set some options for the observer. See documentation for other options. */
+	char *observer_options =
+			coco_strdupf("result_folder: RS_on_%s "
+								 "algorithm_name: RS "
+								 "algorithm_info: \"A simple random search algorithm\"", suite_name);
 
-  /* Initialize the suite and observer.
-   *
-   * For more details on how to change the default options, see
-   * http://numbbo.github.io/coco-doc/C/#suite-parameters and
-   * http://numbbo.github.io/coco-doc/C/#observer-parameters. */
-  suite = coco_suite(suite_name, "", "");
-  observer = coco_observer(observer_name, observer_options);
-  coco_free_memory(observer_options);
+	/* Initialize the suite and observer.
+	 *
+	 * For more details on how to change the default options, see
+	 * http://numbbo.github.io/coco-doc/C/#suite-parameters and
+	 * http://numbbo.github.io/coco-doc/C/#observer-parameters. */
+	suite = coco_suite(suite_name, "", "");
+	observer = coco_observer(observer_name, observer_options);
+	coco_free_memory(observer_options);
 
-  /* Initialize timing */
-  timing_data = timing_data_initialize(suite);
+	/* Initialize timing */
+	timing_data = timing_data_initialize(suite);
 
-  /* Iterate over all problems in the suite */
-  while ((PROBLEM = coco_suite_get_next_problem(suite, observer)) != NULL) {
+	/* Iterate over all problems in the suite */
+	while ((PROBLEM = coco_suite_get_next_problem(suite, observer)) != NULL) {
 
-    size_t dimension = coco_problem_get_dimension(PROBLEM);
+		size_t dimension = coco_problem_get_dimension(PROBLEM);
 
-    /* Run the algorithm at least once */
-    for (run = 1; run <= 1 + INDEPENDENT_RESTARTS; run++) {
+		/* Run the algorithm at least once */
+		for (run = 1; run <= 1 + INDEPENDENT_RESTARTS; run++) {
 
-      long evaluations_done = (long) (coco_problem_get_evaluations(PROBLEM) +
-            coco_problem_get_evaluations_constraints(PROBLEM));
-      long evaluations_remaining = (long) (dimension * BUDGET_MULTIPLIER) - evaluations_done;
+			long evaluations_done = (long) (coco_problem_get_evaluations(PROBLEM) +
+											coco_problem_get_evaluations_constraints(PROBLEM));
+			long evaluations_remaining = (long) (dimension * BUDGET_MULTIPLIER) - evaluations_done;
 
-      /* Break the loop if the target was hit or there are no more remaining evaluations */
-      if ((coco_problem_final_target_hit(PROBLEM) &&
-           coco_problem_get_number_of_constraints(PROBLEM) == 0)
-           || (evaluations_remaining <= 0))
-        break;
+			/* Break the loop if the target was hit or there are no more remaining evaluations */
+			if ((coco_problem_final_target_hit(PROBLEM) &&
+				 coco_problem_get_number_of_constraints(PROBLEM) == 0)
+				|| (evaluations_remaining <= 0))
+				break;
 
-      /* Call the optimization algorithm for the remaining number of evaluations */
-      /*my_random_search(evaluate_function,
-                       evaluate_constraint,
-                       dimension,
-                       coco_problem_get_number_of_objectives(PROBLEM),
-                       coco_problem_get_number_of_constraints(PROBLEM),
-                       coco_problem_get_smallest_values_of_interest(PROBLEM),
-                       coco_problem_get_largest_values_of_interest(PROBLEM),
-                       (size_t) evaluations_remaining,
-                       random_generator);*/
-		SA_ES sa_es(PROBLEM);
-		for (int i = 0; i < 900; i ++) {
-			sa_es.step();
+			/* Call the optimization algorithm for the remaining number of evaluations */
+			/*my_random_search(evaluate_function,
+							 evaluate_constraint,
+							 dimension,
+							 coco_problem_get_number_of_objectives(PROBLEM),
+							 coco_problem_get_number_of_constraints(PROBLEM),
+							 coco_problem_get_smallest_values_of_interest(PROBLEM),
+							 coco_problem_get_largest_values_of_interest(PROBLEM),
+							 (size_t) evaluations_remaining,
+							 random_generator);*/
+			SA_ES sa_es(PROBLEM);
+			for (int i = 0; i < 900; i++) {
+				sa_es.step();
+			}
+
+			/* Break the loop if the algorithm performed no evaluations or an unexpected thing happened */
+			if (coco_problem_get_evaluations(PROBLEM) == evaluations_done) {
+				printf("WARNING: Budget has not been exhausted (%lu/%lu evaluations done)!\n",
+					   (unsigned long) evaluations_done, (unsigned long) dimension * BUDGET_MULTIPLIER);
+				break;
+			} else if (coco_problem_get_evaluations(PROBLEM) < evaluations_done)
+				coco_error("Something unexpected happened - function evaluations were decreased!");
 		}
 
-      /* Break the loop if the algorithm performed no evaluations or an unexpected thing happened */
-      if (coco_problem_get_evaluations(PROBLEM) == evaluations_done) {
-        printf("WARNING: Budget has not been exhausted (%lu/%lu evaluations done)!\n",
-        		(unsigned long) evaluations_done, (unsigned long) dimension * BUDGET_MULTIPLIER);
-        break;
-      }
-      else if (coco_problem_get_evaluations(PROBLEM) < evaluations_done)
-        coco_error("Something unexpected happened - function evaluations were decreased!");
-    }
+		/* Keep track of time */
+		timing_data_time_problem(timing_data, PROBLEM);
+	}
 
-    /* Keep track of time */
-    timing_data_time_problem(timing_data, PROBLEM);
-  }
+	/* Output and finalize the timing data */
+	timing_data_finalize(timing_data);
 
-  /* Output and finalize the timing data */
-  timing_data_finalize(timing_data);
-
-  coco_observer_free(observer);
-  coco_suite_free(suite);
+	coco_observer_free(observer);
+	coco_suite_free(suite);
 
 }
 
@@ -208,45 +210,45 @@ void example_experiment(const char *suite_name,
  * distributed random numbers.
  */
 void my_random_search(evaluate_function_t evaluate_func,
-                      evaluate_function_t evaluate_cons,
-                      const size_t dimension,
-                      const size_t number_of_objectives,
-                      const size_t number_of_constraints,
-                      const double *lower_bounds,
-                      const double *upper_bounds,
-                      const size_t max_budget,
-                      coco_random_state_t *random_generator) {
+					  evaluate_function_t evaluate_cons,
+					  const size_t dimension,
+					  const size_t number_of_objectives,
+					  const size_t number_of_constraints,
+					  const double *lower_bounds,
+					  const double *upper_bounds,
+					  const size_t max_budget,
+					  coco_random_state_t *random_generator) {
 
-  double *x = coco_allocate_vector(dimension);
-  double *functions_values = coco_allocate_vector(number_of_objectives);
-  double *constraints_values = NULL;
-  double range;
-  size_t i, j;
+	double *x = coco_allocate_vector(dimension);
+	double *functions_values = coco_allocate_vector(number_of_objectives);
+	double *constraints_values = NULL;
+	double range;
+	size_t i, j;
 
-  if (number_of_constraints > 0 )
-    constraints_values = coco_allocate_vector(number_of_constraints);
+	if (number_of_constraints > 0)
+		constraints_values = coco_allocate_vector(number_of_constraints);
 
-  for (i = 0; i < max_budget; ++i) {
+	for (i = 0; i < max_budget; ++i) {
 
-    /* Construct x as a random point between the lower and upper bounds */
-    for (j = 0; j < dimension; ++j) {
-      range = upper_bounds[j] - lower_bounds[j];
-      x[j] = lower_bounds[j] + coco_random_uniform(random_generator) * range;
-    }
+		/* Construct x as a random point between the lower and upper bounds */
+		for (j = 0; j < dimension; ++j) {
+			range = upper_bounds[j] - lower_bounds[j];
+			x[j] = lower_bounds[j] + coco_random_uniform(random_generator) * range;
+		}
 
-    /* Evaluate COCO's constraints function if problem is constrained */
-    if (number_of_constraints > 0 )
-      evaluate_cons(x, constraints_values);
+		/* Evaluate COCO's constraints function if problem is constrained */
+		if (number_of_constraints > 0)
+			evaluate_cons(x, constraints_values);
 
-    /* Call COCO's evaluate function where all the logging is performed */
-    evaluate_func(x, functions_values);
+		/* Call COCO's evaluate function where all the logging is performed */
+		evaluate_func(x, functions_values);
 
-  }
+	}
 
-  coco_free_memory(x);
-  coco_free_memory(functions_values);
-  if (number_of_constraints > 0 )
-    coco_free_memory(constraints_values);
+	coco_free_memory(x);
+	coco_free_memory(functions_values);
+	if (number_of_constraints > 0)
+		coco_free_memory(constraints_values);
 }
 
 /**
@@ -263,67 +265,67 @@ void my_random_search(evaluate_function_t evaluate_func,
  * nodes of the grid are evaluated.
  */
 void my_grid_search(evaluate_function_t evaluate,
-                    const size_t dimension,
-                    const size_t number_of_objectives,
-                    const double *lower_bounds,
-                    const double *upper_bounds,
-                    const size_t max_budget) {
+					const size_t dimension,
+					const size_t number_of_objectives,
+					const double *lower_bounds,
+					const double *upper_bounds,
+					const size_t max_budget) {
 
-  double *x = coco_allocate_vector(dimension);
-  double *y = coco_allocate_vector(number_of_objectives);
-  long *nodes = (long *) coco_allocate_memory(sizeof(long) * dimension);
-  double *grid_step = coco_allocate_vector(dimension);
-  size_t i, j;
-  size_t evaluations = 0;
-  long max_nodes = (long) floor(pow((double) max_budget, 1.0 / (double) dimension)) - 1;
+	double *x = coco_allocate_vector(dimension);
+	double *y = coco_allocate_vector(number_of_objectives);
+	long *nodes = (long *) coco_allocate_memory(sizeof(long) * dimension);
+	double *grid_step = coco_allocate_vector(dimension);
+	size_t i, j;
+	size_t evaluations = 0;
+	long max_nodes = (long) floor(pow((double) max_budget, 1.0 / (double) dimension)) - 1;
 
-  /* Take care of the borderline case */
-  if (max_nodes < 1) max_nodes = 1;
+	/* Take care of the borderline case */
+	if (max_nodes < 1) max_nodes = 1;
 
-  /* Initialization */
-  for (j = 0; j < dimension; j++) {
-    nodes[j] = 0;
-    grid_step[j] = (upper_bounds[j] - lower_bounds[j]) / (double) max_nodes;
-  }
+	/* Initialization */
+	for (j = 0; j < dimension; j++) {
+		nodes[j] = 0;
+		grid_step[j] = (upper_bounds[j] - lower_bounds[j]) / (double) max_nodes;
+	}
 
-  while (evaluations < max_budget) {
+	while (evaluations < max_budget) {
 
-    /* Construct x and evaluate it */
-    for (j = 0; j < dimension; j++) {
-      x[j] = lower_bounds[j] + grid_step[j] * (double) nodes[j];
-    }
+		/* Construct x and evaluate it */
+		for (j = 0; j < dimension; j++) {
+			x[j] = lower_bounds[j] + grid_step[j] * (double) nodes[j];
+		}
 
-    /* Call the evaluate function to evaluate x on the current problem (this is where all the COCO logging
-     * is performed) */
-    evaluate(x, y);
-    evaluations++;
+		/* Call the evaluate function to evaluate x on the current problem (this is where all the COCO logging
+		 * is performed) */
+		evaluate(x, y);
+		evaluations++;
 
-    /* Inside the grid, move to the next node */
-    if (nodes[0] < max_nodes) {
-      nodes[0]++;
-    }
+		/* Inside the grid, move to the next node */
+		if (nodes[0] < max_nodes) {
+			nodes[0]++;
+		}
 
-    /* At an outside node of the grid, move to the next level */
-    else if (max_nodes > 0) {
-      for (j = 1; j < dimension; j++) {
-        if (nodes[j] < max_nodes) {
-          nodes[j]++;
-          for (i = 0; i < j; i++)
-            nodes[i] = 0;
-          break;
-        }
-      }
+			/* At an outside node of the grid, move to the next level */
+		else if (max_nodes > 0) {
+			for (j = 1; j < dimension; j++) {
+				if (nodes[j] < max_nodes) {
+					nodes[j]++;
+					for (i = 0; i < j; i++)
+						nodes[i] = 0;
+					break;
+				}
+			}
 
-      /* At the end of the grid, exit */
-      if ((j == dimension) && (nodes[j - 1] == max_nodes))
-        break;
-    }
-  }
+			/* At the end of the grid, exit */
+			if ((j == dimension) && (nodes[j - 1] == max_nodes))
+				break;
+		}
+	}
 
-  coco_free_memory(x);
-  coco_free_memory(y);
-  coco_free_memory(nodes);
-  coco_free_memory(grid_step);
+	coco_free_memory(x);
+	coco_free_memory(y);
+	coco_free_memory(nodes);
+	coco_free_memory(grid_step);
 }
 
 /**
@@ -336,7 +338,7 @@ static timing_data_t *timing_data_initialize(coco_suite_t *suite) {
 
 	/* Find out the number of all dimensions */
 	coco_suite_decode_problem_index(suite, coco_suite_get_number_of_problems(suite) - 1, &function_idx,
-			&dimension_idx, &instance_idx);
+									&dimension_idx, &instance_idx);
 	timing_data->number_of_dimensions = dimension_idx + 1;
 	timing_data->current_idx = 0;
 	timing_data->output = (char **) coco_allocate_memory(timing_data->number_of_dimensions * sizeof(char *));
@@ -367,7 +369,8 @@ static void timing_data_time_problem(timing_data_t *timing_data, coco_problem_t 
 			time(&now);
 			elapsed_seconds = difftime(now, timing_data->start_time) / (double) timing_data->cumulative_evaluations;
 			timing_data->output[timing_data->current_idx++] = coco_strdupf("d=%lu done in %.2e seconds/evaluation\n",
-					timing_data->previous_dimension, elapsed_seconds);
+																		   timing_data->previous_dimension,
+																		   elapsed_seconds);
 		}
 
 		if (problem != NULL) {
@@ -390,28 +393,28 @@ static void timing_data_finalize(timing_data_t *timing_data) {
 	/* Record the last problem */
 	timing_data_time_problem(timing_data, NULL);
 
-  if (timing_data) {
-  	size_t i;
-  	double elapsed_seconds;
+	if (timing_data) {
+		size_t i;
+		double elapsed_seconds;
 		time_t now;
 		int hours, minutes, seconds;
 
 		time(&now);
 		elapsed_seconds = difftime(now, timing_data->overall_start_time);
 
-  	printf("\n");
-  	for (i = 0; i < timing_data->number_of_dimensions; i++) {
-    	if (timing_data->output[i]) {
+		printf("\n");
+		for (i = 0; i < timing_data->number_of_dimensions; i++) {
+			if (timing_data->output[i]) {
 				printf("%s", timing_data->output[i]);
 				coco_free_memory(timing_data->output[i]);
-    	}
-    }
-  	hours = (int) elapsed_seconds / 3600;
-  	minutes = ((int) elapsed_seconds % 3600) / 60;
-  	seconds = (int)elapsed_seconds - (hours * 3600) - (minutes * 60);
-  	printf("Total elapsed time: %dh%02dm%02ds\n", hours, minutes, seconds);
+			}
+		}
+		hours = (int) elapsed_seconds / 3600;
+		minutes = ((int) elapsed_seconds % 3600) / 60;
+		seconds = (int) elapsed_seconds - (hours * 3600) - (minutes * 60);
+		printf("Total elapsed time: %dh%02dm%02ds\n", hours, minutes, seconds);
 
-    coco_free_memory(timing_data->output);
-    coco_free_memory(timing_data);
-  }
+		coco_free_memory(timing_data->output);
+		coco_free_memory(timing_data);
+	}
 }
