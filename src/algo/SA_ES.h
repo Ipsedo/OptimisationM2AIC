@@ -7,13 +7,16 @@
 
 #include <vector>
 #include "../coco.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 
 using namespace std;
 
 class SA_ES {
 private:
 	int n;
+	int d;
+
+	/*int nbConstraint;*/
 
 	int lambda;
 	int mu;
@@ -25,10 +28,10 @@ private:
 
 	individual parent;
 
-	void step();
-
 public:
-	SA_ES(coco_problem_s *p, int dim);
+	SA_ES(coco_problem_s *p);
+
+	void step();
 };
 
 
