@@ -49,7 +49,6 @@ void example_experiment(const char *suite_name,
 						const char *observer_name,
 						coco_random_state_t *random_generator);
 
-
 /* Structure and functions needed for timing the experiment */
 typedef struct {
 	size_t number_of_dimensions;
