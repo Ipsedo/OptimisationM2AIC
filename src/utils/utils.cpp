@@ -3,8 +3,6 @@
 //
 
 #include "utils.h"
-#include <random>
-#include <iostream>
 
 vector<double> getNormalValues(int n, normal_distribution<double> distribution,
 	default_random_engine generator) {
