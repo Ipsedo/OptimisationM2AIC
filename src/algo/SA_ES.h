@@ -16,21 +16,23 @@ private:
 	int n;
 	int d;
 
-	normal_distribution<double> distribution;
+	normal_distribution<double> normal_dist;
 	default_random_engine generator;
 
 	int lambda;
 	int mu;
 
 	double tau;
-	vector<double> taus;
+	double tauI;
 
 	coco_problem_s *problem;
 
 	individual parent;
 
+	vector<double> makeZerosVector();
+
 public:
-	SA_ES(coco_problem_s *p);
+	explicit SA_ES(coco_problem_s *p);
 
 	void step();
 };
