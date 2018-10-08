@@ -46,8 +46,7 @@ static coco_problem_t *PROBLEM;
 
 /* Declarations of all functions implemented in this file (so that their order is not important): */
 void example_experiment(const char *suite_name,
-						const char *observer_name,
-						coco_random_state_t *random_generator);
+						const char *observer_name);
 
 /* Structure and functions needed for timing the experiment */
 typedef struct {
@@ -74,8 +73,6 @@ static void timing_data_finalize(timing_data_t *timing_data);
  */
 int main(void) {
 
-	coco_random_state_t *random_generator = coco_random_new(RANDOM_SEED);
-
 	srand(SEED);
 
 	/* Change the log level to "warning" to get less output */
@@ -98,12 +95,10 @@ int main(void) {
 	 * Adapt to your need. Note that the experiment is run according
 	 * to the settings, defined in example_experiment(...) below.
 	 */
-	example_experiment("bbob", "bbob", random_generator);
+	example_experiment("bbob", "bbob");
 
 	printf("Done!\n");
 	fflush(stdout);
-
-	coco_random_free(random_generator);
 
 	return 0;
 }
@@ -118,8 +113,7 @@ int main(void) {
  * @param random_generator The random number generator.
  */
 void example_experiment(const char *suite_name,
-						const char *observer_name,
-						coco_random_state_t *random_generator) {
+						const char *observer_name) {
 
 	size_t run;
 	coco_suite_t *suite;
@@ -161,17 +155,8 @@ void example_experiment(const char *suite_name,
 				 coco_problem_get_number_of_constraints(PROBLEM) == 0)
 				|| (evaluations_remaining <= 0))
 				break;
-
-			/* Call the optimization algorithm for the remaining number of evaluations */
-			/*my_random_search(evaluate_function,
-							 evaluate_constraint,
-							 dimension,
-							 coco_problem_get_number_of_objectives(PROBLEM),
-							 coco_problem_get_number_of_constraints(PROBLEM),
-							 coco_problem_get_smallest_values_of_interest(PROBLEM),
-							 coco_problem_get_largest_values_of_interest(PROBLEM),
-							 (size_t) evaluations_remaining,
-							 random_generator);*/
+			
+			/** ALGO SA_ES */
 			SA_ES sa_es(PROBLEM);
 			for (int i = 0; i < 1000; i++) {
 				sa_es.step();
