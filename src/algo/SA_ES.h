@@ -17,6 +17,7 @@ private:
 	int d;
 
 	normal_distribution<double> normal_dist;
+	uniform_real_distribution<double> uniform_dist;
 	default_random_engine generator;
 
 	int lambda;
@@ -29,7 +30,7 @@ private:
 
 	individual parent;
 
-	vector<double> makeZerosVector();
+	vector<double> makeVector();
 
 public:
 	explicit SA_ES(coco_problem_s *p);

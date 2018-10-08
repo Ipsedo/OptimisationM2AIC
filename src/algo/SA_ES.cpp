@@ -7,12 +7,12 @@
 
 // tau ≈ 1 / sqrt(n) ? ajouter random ?
 SA_ES::SA_ES(coco_problem_s *p)
-		: normal_dist(0., 1.), generator(),
+		: normal_dist(0., 1.), uniform_dist(-1., 1.), generator(),
 		  problem(p), n(static_cast<int>(coco_problem_get_dimension(p))),
 		  d(static_cast<int>(coco_problem_get_number_of_objectives(p))),
-		  lambda(5 * n), mu(lambda / 4),
+		  lambda(10 * n), mu(lambda / 4),
 		  tau(1. / sqrt(n)), tauI(1. / pow(n, 1. / 4.)),
-		  parent(individual{makeZerosVector(), makeZerosVector(), 0.}) {
+		  parent(individual{makeVector(), makeVector(), 0.}) {
 }
 
 void SA_ES::step() {
@@ -20,7 +20,6 @@ void SA_ES::step() {
 	vector<individual> childens;
 	for (int i = 0; i < lambda; i++) {
 		individual c;
-		c.f_value = numeric_limits<double>::max();
 
 		double xi = tau * normal_dist(generator);
 		vector<double> xis = getNormalValues(n, normal_dist, generator) * tauI;
@@ -59,6 +58,8 @@ void SA_ES::step() {
 	childens.clear();
 }
 
-vector<double> SA_ES::makeZerosVector() {
-	return vector<double>((unsigned long) n, 1.);
+vector<double> SA_ES::makeVector() {
+	vector<double> res((unsigned long) n);
+	transform(res.begin(), res.end(), res.begin(), [this](double d){ return uniform_dist(generator);});
+	return res;
 }
