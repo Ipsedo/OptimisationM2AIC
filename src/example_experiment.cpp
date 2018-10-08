@@ -155,10 +155,10 @@ void example_experiment(const char *suite_name,
 				 coco_problem_get_number_of_constraints(PROBLEM) == 0)
 				|| (evaluations_remaining <= 0))
 				break;
-			
+
 			/** ALGO SA_ES */
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 200; i++) {
 				sa_es.step();
 			}
 
