@@ -30,7 +30,7 @@ private:
 
 	individual parent;
 
-	vector<double> makeVector();
+	vector<double> makeVector(double min, double range);
 
 public:
 	explicit SA_ES(coco_problem_s *p);
