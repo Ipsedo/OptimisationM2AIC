@@ -57,3 +57,14 @@ double dot(vector<double> v1, vector<double> v2) {
 	}
 	return res;
 }
+
+double normal(double x, double mu, double sig) {
+	return exp(-pow(x - mu, 2.) / (sig * sig * 2.)) / (sig * sqrt(2. * M_PI));
+}
+
+vector<double> toNormalValues(vector<double> x, vector<double> mus, vector<double> sigs) {
+	vector<double> res;
+	for (int i = 0; i < x.size(); i++)
+		res.push_back(normal(x[i], mus[i], sigs[i]));
+	return res;
+}

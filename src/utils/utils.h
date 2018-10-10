@@ -24,9 +24,8 @@ vector<T> operator*(vector<T> v1, vector<T> v2) {
 		exit(SIZE_ERROR);
 	}
 	vector<T> res;
-	for (int i = 0; i < v1.size(); i++) {
+	for (int i = 0; i < v1.size(); i++)
 		res.push_back(v1[i] * v2[i]);
-	}
 	return res;
 }
 
@@ -45,9 +44,8 @@ vector<T> operator+(vector<T> v1, vector<T> v2) {
 		exit(SIZE_ERROR);
 	}
 	vector<T> res;
-	for (int i = 0; i < v1.size(); i++) {
+	for (int i = 0; i < v1.size(); i++)
 		res.push_back(v1[i] + v2[i]);
-	}
 	return res;
 }
 
@@ -67,5 +65,9 @@ vector<vector<double>> toDiag(vector<double> v);
 double dot(vector<double> v1, vector<double> v2);
 
 vector<double> multMV(vector<double> v, vector<vector<double>> m);
+
+double normal(double x, double mu, double sig);
+
+vector<double> toNormalValues(vector<double> x, vector<double> mus, vector<double> sigs);
 
 #endif //UTILS_H
