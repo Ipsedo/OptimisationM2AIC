@@ -26,11 +26,15 @@ private:
 	double tau;
 	double tauI;
 
+	const double *minValues;
+	const double *maxValues;
+
 	coco_problem_s *problem;
 
 	individual parent;
 
 	vector<double> makeVector(double min, double range);
+	vector<double> makeXVector();
 
 public:
 	explicit SA_ES(coco_problem_s *p);
