@@ -10,7 +10,7 @@ SA_ES::SA_ES(coco_problem_s *p)
 		  problem(p), n(static_cast<int>(coco_problem_get_dimension(p))),
 		  minValues(coco_problem_get_smallest_values_of_interest(p)),
 		  maxValues(coco_problem_get_largest_values_of_interest(p)),
-		  lambda(5 * n), mu(lambda / 4),
+		  lambda(100 * n), mu(lambda / 4),
 		  tau(1. / sqrt(n)), tauI(1. / pow(n, 1. / 4.)),
 		  parent(individual{makeXVector(), makeVector(numeric_limits<double>::min(), 1.), 0.}) {
 }
@@ -39,7 +39,7 @@ void SA_ES::step() {
 	}
 
 	// Sort for select best
-	sort(childens.begin(), childens.end(), [](individual i1, individual i2){ return i1.f_value > i2.f_value; });
+	sort(childens.begin(), childens.end(), [](individual i1, individual i2){ return i1.f_value < i2.f_value; });
 
 	// Recombination
 	for (int i = 0; i < n; i++) {
