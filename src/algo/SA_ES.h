@@ -14,7 +14,6 @@ using namespace std;
 class SA_ES {
 private:
 	int n;
-	int d;
 
 	normal_distribution<double> normal_dist;
 	uniform_real_distribution<double> uniform_dist;
