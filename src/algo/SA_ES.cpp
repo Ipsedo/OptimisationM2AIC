@@ -10,7 +10,7 @@ SA_ES::SA_ES(coco_problem_s *p)
 		  problem(p), n(static_cast<int>(coco_problem_get_dimension(p))),
 		  minValues(coco_problem_get_smallest_values_of_interest(p)),
 		  maxValues(coco_problem_get_largest_values_of_interest(p)),
-		  lambda(100 * n), mu(lambda / 4),
+		  lambda(50 * n), mu(lambda / 4),
 		  tau(1. / sqrt(n)), tauI(1. / pow(n, 1. / 4.)),
 		  parent(individual{makeXVector(), makeVector(numeric_limits<double>::min(), 1.), 0.}) {
 }
@@ -59,7 +59,10 @@ void SA_ES::step() {
 }
 
 vector<double> SA_ES::makeVector(double min, double range) {
-	return vector<double>((unsigned long) n, range * uniform_dist(generator) + min);
+	vector<double> res;
+	for (int i = 0; i < n; i++)
+		res.push_back(range * uniform_dist(generator) + min);
+	return res;
 }
 
 vector<double> SA_ES::makeXVector() {
