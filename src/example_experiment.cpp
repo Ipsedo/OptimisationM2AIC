@@ -131,7 +131,7 @@ void example_experiment(const char *suite_name,
 	 * For more details on how to change the default options, see
 	 * http://numbbo.github.io/coco-doc/C/#suite-parameters and
 	 * http://numbbo.github.io/coco-doc/C/#observer-parameters. */
-	suite = coco_suite(suite_name, "", "");
+	suite = coco_suite(suite_name, "", "dimensions: 2,3,5,10,20");
 	observer = coco_observer(observer_name, observer_options);
 	coco_free_memory(observer_options);
 
@@ -158,7 +158,7 @@ void example_experiment(const char *suite_name,
 
 			/** ALGO SA_ES */
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 200; i++) {
+			for (int i = 0; i < 50; i++) {
 				sa_es.step();
 			}
 
