@@ -2,7 +2,6 @@
 // Created by samuel on 07/10/18.
 //
 
-#include <algorithm>
 #include "SA_ES.h"
 
 SA_ES::SA_ES(coco_problem_s *p)
@@ -10,9 +9,9 @@ SA_ES::SA_ES(coco_problem_s *p)
 		  problem(p), n(static_cast<int>(coco_problem_get_dimension(p))),
 		  minValues(coco_problem_get_smallest_values_of_interest(p)),
 		  maxValues(coco_problem_get_largest_values_of_interest(p)),
-		  lambda(50 * n), mu(lambda / 4),
+		  lambda(SIZE * n), mu(lambda / 4),
 		  tau(1. / sqrt(n)), tauI(1. / pow(n, 1. / 4.)),
-		  parent(individual{makeXVector(), makeVector(numeric_limits<double>::min(), 1.), 0.}) {
+		  parent(individual{makeXVector(), makeVector(numeric_limits<double>::min(), 1e10), 0.}) {
 }
 
 void SA_ES::step() {
@@ -55,6 +54,8 @@ void SA_ES::step() {
 		i.x.clear();
 		i.s.clear();
 	}
+	coco_evaluate_function(problem, parent.x.data(), &parent.f_value);
+	//cout << parent.f_value << " ";
 	childens.clear();
 }
 
@@ -71,3 +72,9 @@ vector<double> SA_ES::makeXVector() {
 		res.push_back(uniform_dist(generator) * (maxValues[i] - minValues[i]) + minValues[i]);
 	return res;
 }
+
+double SA_ES::getParentValue() {
+	return parent.f_value;
+}
+
+

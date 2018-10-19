@@ -5,9 +5,11 @@
 #ifndef OPTIMISATIONM2AIC_SA_ES_H
 #define OPTIMISATIONM2AIC_SA_ES_H
 
-#include <vector>
 #include "../coco.h"
 #include "../utils/utils.h"
+
+#define RATIO 4 / 5
+#define SIZE 5
 
 using namespace std;
 
@@ -39,6 +41,8 @@ public:
 	explicit SA_ES(coco_problem_s *p);
 
 	void step();
+
+	double getParentValue();
 };
 
 

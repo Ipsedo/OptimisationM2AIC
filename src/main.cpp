@@ -19,7 +19,7 @@
  * The maximal budget for evaluations done by an optimization algorithm equals dimension * BUDGET_MULTIPLIER.
  * Increase the budget multiplier value gradually to see how it affects the runtime.
  */
-static const unsigned int BUDGET_MULTIPLIER = 100;
+static const unsigned int BUDGET_MULTIPLIER = 1000;
 
 /**
  * The maximal number of independent restarts allowed for an algorithm that restarts itself.
@@ -131,7 +131,7 @@ void example_experiment(const char *suite_name,
 	 * For more details on how to change the default options, see
 	 * http://numbbo.github.io/coco-doc/C/#suite-parameters and
 	 * http://numbbo.github.io/coco-doc/C/#observer-parameters. */
-	suite = coco_suite(suite_name, "", "dimensions: 2,3,5,10,20");
+	suite = coco_suite(suite_name, "", "dimensions: 20");
 	observer = coco_observer(observer_name, observer_options);
 	coco_free_memory(observer_options);
 
@@ -158,9 +158,11 @@ void example_experiment(const char *suite_name,
 
 			/** ALGO SA_ES */
 			SA_ES sa_es(PROBLEM);
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 50; i++) {
 				sa_es.step();
 			}
+			//cout << endl;
+			//cout << sa_es.getParentValue() << endl;
 
 			/* Break the loop if the algorithm performed no evaluations or an unexpected thing happened */
 			if (coco_problem_get_evaluations(PROBLEM) == evaluations_done) {
